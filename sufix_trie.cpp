@@ -16,16 +16,11 @@ public:
     }
 };
 
-class Trie {
+class SuffixTrie {
 private:
     Node *root;
 
-public:
-    Trie () {
-        this->root = new Node('\0');
-    }
-
-    void insert(string word) {
+    void insert_helper(string word) {
         Node *temp = this->root;
         for (char c: word) {
             if (temp->m.find(c) == temp->m.end()) {
@@ -34,6 +29,17 @@ public:
             temp = temp->m[c];
         }
         temp->isTerminal = true;
+    }
+
+public:
+    SuffixTrie () {
+        this->root = new Node('\0');
+    }
+
+    void insert(string word) {
+       for (int i = 0; i < word.length(); i++) {
+            this->insert_helper(word.substr(i, word.length()));
+       }
     };
 
     bool search(string word) {
@@ -49,10 +55,12 @@ public:
 };
 
 int main(void) {
-    string words[] = {"ape", "apple", "rhino", "always", "mango", "banana", "orange", "pineapple"};
+    // string words[] = {"ape", "apple", "rhino", "always", "mango", "banana", "orange", "pineapple"};
+    string word = "Hello";
 
-    Trie t;
-    for (string word: words) t.insert(word); 
+    SuffixTrie t;
+    t.insert(word);
+    // for (string word: words) t.insert(word); 
 
     string input;
     do {
